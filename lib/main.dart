@@ -3,37 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp());//metoda uruchamiająca całą aplikacje
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//podstawowy budowniczy aplikacji po nim wszystkie widety dziedzicza czyba że to zmienimy
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'newRandomWord',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         ),
-        home: MyHomePage(),
+        home: MyHomePage(),//Jaki kontent sie uruchamia wraz z włączeniem aplikacji
       ),
     );
   }
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
+  var current = WordPair.random();//zmienna przechowująca parę randomowych słów
 
-  void getNext() {
+  void getNext() {//metoda która tworzy kolejną parę słów
     current = WordPair.random();
     notifyListeners();
   }
 
-  var favorites = <WordPair>[];
+  var favorites = <WordPair>[];//tablica przechwująca ulubione słowa
 
   void toggleFavorite() {
     if (favorites.contains(current)) {
@@ -47,29 +47,29 @@ class MyAppState extends ChangeNotifier {
 
 class MyHomePage extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();//funkcja lambda przechowująca obecny widok aplikacji
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
+  var selectedIndex = 0;//zmienna przechowująca obecny widok aplikacji 0- home, 1- favorites
 
   @override
   Widget build(BuildContext context) {
     Widget page;
-    switch (selectedIndex) {
+    switch (selectedIndex) {//blok switch do przechodzenia pomiędzy widokami
       case 0:
-        page = GeneratorPage();
+        page = GeneratorPage();//generowanie nowych słów
       case 1:
-        page = FavoritesPage();
+        page = FavoritesPage();//przechowywanie ulubionych
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        throw UnimplementedError('no widget for $selectedIndex');//wynik błędu gdyby pojawił się inny index niż 0 lub 1
     }
 
-    return LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilder(builder: (context, constraints) {//budowniczy całego widoku aplikacji
       return Scaffold(
         body: Row(
           children: [
-            SafeArea(
+            SafeArea(//side bar z ikonami dzieki którym możemy przechodzić na inne widoki
               child: NavigationRail(
                 extended: constraints.maxWidth >= 600,
                 destinations: [
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
-              child: Container(
+              child: Container(//obszar na którym wyświetlane są pary słów
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
               ),
@@ -103,20 +103,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class GeneratorPage extends StatelessWidget {
+class GeneratorPage extends StatelessWidget {// widok generatora par
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var pair = appState.current;
+    var pair = appState.current;// zmienna przechowująca interesujące nas słowo
 
     IconData icon;
-    if (appState.favorites.contains(pair)) {
+    if (appState.favorites.contains(pair)) {//blok if do zmiany ikony like
       icon = Icons.favorite;
     } else {
       icon = Icons.favorite_border;
     }
 
-    return Center(
+    return Center(//stylowanie widoku aplikacji
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -133,7 +133,7 @@ class GeneratorPage extends StatelessWidget {
                 label: Text('Like'),
               ),
               SizedBox(width: 10),
-              ElevatedButton(
+              ElevatedButton(// przycisk, po kliknięciu wywołuję metode getNext do stworzenia nowej pray słów
                 onPressed: () {
                   appState.getNext();
                 },
@@ -147,7 +147,7 @@ class GeneratorPage extends StatelessWidget {
   }
 }
 
-class BigCard extends StatelessWidget {
+class BigCard extends StatelessWidget {// nie zrozumiałem do końca po co to jest, myślę że to coś do tworzenia i wyświetlania par słów
   const BigCard({
     super.key,
     required this.pair,
@@ -176,23 +176,23 @@ class BigCard extends StatelessWidget {
   }
 }
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPage extends StatelessWidget {// Widok ulubionych słów
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    if (appState.favorites.isEmpty) {
+    if (appState.favorites.isEmpty) {// informacja dla użytkownika że jeszcze nie polubił żadnego słowa
       return Center(
-        child: Text('No favorites yet.'),
+        child: Text('Nie posiadasz jeszcze żadnych ulubionych słów.'),
       );
     }
 
-    return ListView(
+    return ListView(// lista ulubionych par słów
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites:'),
+          child: Text('Już masz '
+              '${appState.favorites.length} ulubionych:'),
         ),
         for (var pair in appState.favorites)
           ListTile(
