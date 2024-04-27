@@ -49,6 +49,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+<<<<<<< HEAD
   english_words:
     dependency: "direct main"
     description:
@@ -57,6 +58,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+=======
+>>>>>>> 1112c59b81f09d68571ecd5f2c9f94490d724e2d
   fake_async:
     dependency: transitive
     description:
@@ -139,6 +142,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+<<<<<<< HEAD
   nested:
     dependency: transitive
     description:
@@ -147,6 +151,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+=======
+>>>>>>> 1112c59b81f09d68571ecd5f2c9f94490d724e2d
   path:
     dependency: transitive
     description:
@@ -155,6 +161,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+<<<<<<< HEAD
   provider:
     dependency: "direct main"
     description:
@@ -163,6 +170,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+=======
+>>>>>>> 1112c59b81f09d68571ecd5f2c9f94490d724e2d
   sky_engine:
     dependency: transitive
     description: flutter
@@ -233,5 +242,9 @@ packages:
     source: hosted
     version: "13.0.0"
 sdks:
+<<<<<<< HEAD
   dart: ">=3.3.1 <4.0.0"
   flutter: ">=1.16.0"
+=======
+  dart: ">=3.3.4 <4.0.0"
+>>>>>>> 1112c59b81f09d68571ecd5f2c9f94490d724e2d

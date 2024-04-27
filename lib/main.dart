@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:english_words/english_words.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'newRandomWord',
+        title: 'Namer App',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
@@ -27,10 +26,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random(); //para randomowych słów
+  var current = WordPair.random();
 
   void getNext() {
-    //metoda dla nowej randomowej pary słów
     current = WordPair.random();
     notifyListeners();
   }
@@ -38,7 +36,6 @@ class MyAppState extends ChangeNotifier {
   var favorites = <WordPair>[];
 
   void toggleFavorite() {
-    //zmiana stanu side bar czy home lub like
     if (favorites.contains(current)) {
       favorites.remove(current);
     } else {
@@ -54,7 +51,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0; //zmienna przetrzymująca podstawowy index na której stronie ma się pokazać aplikacja
+  var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -69,42 +66,39 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return LayoutBuilder(builder: (context, constraints) {
-    return Scaffold(
-      body: Row(
-        children: [
-          SafeArea(
-            child: NavigationRail(
-              //side bar z oknem domowym i polubionymi słowami
-              extended: constraints.maxWidth >= 600,
-              destinations: [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.favorite),
-                  label: Text('Favorites'),
-                ),
-              ],
-              selectedIndex: selectedIndex,
-              //automatycznie przy włączeniu aplikacji wybierany jest index 0 czyli okno domowe
-              onDestinationSelected: (value) {
-                setState(() {
-                  selectedIndex = value;
-                }); //wyświetla w terminalu jaka jest wybrana wartość
-              },
+      return Scaffold(
+        body: Row(
+          children: [
+            SafeArea(
+              child: NavigationRail(
+                extended: constraints.maxWidth >= 600,
+                destinations: [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.home),
+                    label: Text('Home'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.favorite),
+                    label: Text('Favorites'),
+                  ),
+                ],
+                selectedIndex: selectedIndex,
+                onDestinationSelected: (value) {
+                  setState(() {
+                    selectedIndex = value;
+                  });
+                },
+              ),
             ),
-          ),
-          Expanded(
-            //kolor głownego kontenera
-            child: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: page,
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: page,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
     });
   }
 }
@@ -117,7 +111,6 @@ class GeneratorPage extends StatelessWidget {
 
     IconData icon;
     if (appState.favorites.contains(pair)) {
-      // zmiana stanu ikony like
       icon = Icons.favorite;
     } else {
       icon = Icons.favorite_border;
@@ -125,7 +118,6 @@ class GeneratorPage extends StatelessWidget {
 
     return Center(
       child: Column(
-        //obszar z wynikiem funkcji random oraz przyciski
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           BigCard(pair: pair),
@@ -171,27 +163,27 @@ class BigCard extends StatelessWidget {
     );
 
     return Card(
-        color: theme.colorScheme.primary,
-        child: Padding(
+      color: theme.colorScheme.primary,
+      child: Padding(
         padding: const EdgeInsets.all(20),
-    child: Text(
-    pair.asUpperCase,
-    style: style,
-    semanticsLabel: "${pair.first} ${pair.second}",
-      ),
+        child: Text(
+          pair.asLowerCase,
+          style: style,
+          semanticsLabel: "${pair.first} ${pair.second}",
         ),
+      ),
     );
   }
 }
 
-class FavoritesPage extends StatelessWidget {//drugie okno favorites
+class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
     if (appState.favorites.isEmpty) {
       return Center(
-        child: Text('Nie masz jeszcze ulubionych.'),
+        child: Text('No favorites yet.'),
       );
     }
 
@@ -199,13 +191,13 @@ class FavoritesPage extends StatelessWidget {//drugie okno favorites
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text('Masz '
-              '${appState.favorites.length} ulubionych:'),
+          child: Text('You have '
+              '${appState.favorites.length} favorites:'),
         ),
         for (var pair in appState.favorites)
           ListTile(
             leading: Icon(Icons.favorite),
-            title: Text(pair.asUpperCase),
+            title: Text(pair.asLowerCase),
           ),
       ],
     );
